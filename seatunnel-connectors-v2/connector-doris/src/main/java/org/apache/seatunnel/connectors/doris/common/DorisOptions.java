@@ -37,26 +37,34 @@ public class DorisOptions {
     /**
      * For write
      */
+    @Builder.Default
     private int batchSize = DEFAULT_BATCH_SIZE;
+    @Builder.Default
     private int maxRetries = DEFAULT_MAX_RETRIES;
+    @Builder.Default
     private long batchIntervalMs = DEFAULT_BATCH_INTERVAL_MS;
 
     /**
      * For http client
      */
+    @Builder.Default
     private int httpMaxTotal = DEFAULT_HTTP_MAX_TOTAL;
+    @Builder.Default
     private int httpPerRoute = DEFAULT_HTTP_PER_ROUTE;
+    @Builder.Default
     private int httpConnectTimeout = DEFAULT_HTTP_CONNECT_TIMEOUT;
+    @Builder.Default
     private int httpRequestTimeout = DEFAULT_HTTP_REQUEST_TIMEOUT;
+    @Builder.Default
     private int httpWaitTimeout = DEFAULT_HTTP_WAIT_TIMEOUT;
 
     public static DorisOptions fromPluginConfig(Config pluginConfig) {
         DorisOptionsBuilder builder = DorisOptions.builder()
             .feAddresses(pluginConfig.getString(DorisOption.DORIS_FE_ADDRESSES))
-            .username(DorisOption.DORIS_USERNAME)
-            .password(DorisOption.DORIS_PASSWORD)
-            .tableName(DorisOption.DORIS_TABLE_NAME)
-            .databaseName(DorisOption.DORIS_DATABASE_NAME);
+            .username(pluginConfig.getString(DorisOption.DORIS_USERNAME))
+            .password(pluginConfig.getString(DorisOption.DORIS_PASSWORD))
+            .tableName(pluginConfig.getString(DorisOption.DORIS_TABLE_NAME))
+            .databaseName(pluginConfig.getString(DorisOption.DORIS_DATABASE_NAME));
 
         Properties properties = new Properties();
         PropertiesUtil.setProperties(pluginConfig, properties, DorisOption.DORIS_LOAD_EXTRA_PARAMETER, false);

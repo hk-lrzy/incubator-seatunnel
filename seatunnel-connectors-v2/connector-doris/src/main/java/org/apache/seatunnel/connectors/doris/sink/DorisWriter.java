@@ -11,6 +11,7 @@ import org.apache.seatunnel.format.json.JsonSerializationSchema;
 
 import org.apache.seatunnel.shade.com.typesafe.config.Config;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -29,7 +30,7 @@ public class DorisWriter extends AbstractSinkWriter<SeaTunnelRow, Void> {
     private final JsonSerializationSchema serializationSchema;
     private final DorisLoader<String> loader;
 
-    private final List<String> batch;
+    private final List<JsonNode> batch;
 
     public DorisWriter(Config dorisSinkConf,
                        SeaTunnelRowType seaTunnelRowType,
@@ -45,8 +46,7 @@ public class DorisWriter extends AbstractSinkWriter<SeaTunnelRow, Void> {
 
     @Override
     public void write(SeaTunnelRow element) throws IOException {
-        byte[] serialize = serializationSchema.serialize(element);
-        batch.add(new String(serialize));
+        batch.add(JsonUtils.stringToJsonNode(new String(serializationSchema.serialize(element))));
         if (options.getBatchSize() > 0 && batch.size() >= options.getBatchSize()) {
             flush();
         }

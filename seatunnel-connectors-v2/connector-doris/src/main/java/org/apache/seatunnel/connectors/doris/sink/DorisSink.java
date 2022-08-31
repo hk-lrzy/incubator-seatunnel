@@ -1,6 +1,7 @@
 package org.apache.seatunnel.connectors.doris.sink;
 
 import org.apache.seatunnel.api.common.PrepareFailException;
+import org.apache.seatunnel.api.sink.SeaTunnelSink;
 import org.apache.seatunnel.api.sink.SinkWriter;
 import org.apache.seatunnel.api.table.type.SeaTunnelDataType;
 import org.apache.seatunnel.api.table.type.SeaTunnelRow;
@@ -10,11 +11,14 @@ import org.apache.seatunnel.connectors.seatunnel.common.sink.AbstractSinkWriter;
 
 import org.apache.seatunnel.shade.com.typesafe.config.Config;
 
+import com.google.auto.service.AutoService;
+
 import java.io.IOException;
 
 /**
  * Created 2022/8/01
  */
+@AutoService(SeaTunnelSink.class)
 public class DorisSink extends AbstractSimpleSink<SeaTunnelRow, Void> {
     private static final String DORIS_NAME = "doris";
 

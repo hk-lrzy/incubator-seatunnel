@@ -6,11 +6,16 @@ import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpDelete;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpHead;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpPut;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.DefaultHttpRequestRetryHandler;
+import org.apache.http.impl.client.DefaultRedirectStrategy;
 import org.apache.http.impl.client.HttpClients;
-import org.apache.http.impl.client.LaxRedirectStrategy;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
@@ -46,7 +51,11 @@ public class HttpClient {
             .custom()
             .setDefaultRequestConfig(requestConfig)
             .setConnectionManager(connectionManager)
-            .setRedirectStrategy(new LaxRedirectStrategy())
+            .setRedirectStrategy(new DefaultRedirectStrategy(new String[] {HttpGet.METHOD_NAME,
+                HttpPost.METHOD_NAME,
+                HttpHead.METHOD_NAME,
+                HttpDelete.METHOD_NAME,
+                HttpPut.METHOD_NAME}))
             .setRetryHandler(DefaultHttpRequestRetryHandler.INSTANCE)
             .build();
     }
